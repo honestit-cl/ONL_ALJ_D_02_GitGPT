@@ -2,12 +2,12 @@ package pl.coderslab.gitgpt.commit;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,5 +30,15 @@ public class CommitController {
   public ResponseEntity<CommitSummary> getCommit(@PathVariable String sha) {
     Optional<CommitSummary> commitSummary = commitManager.getBySha(sha);
     return commitSummary.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+  }
+
+  @PutMapping("/{sha}")
+  public ResponseEntity<CommitSummary> updateCommit(
+      @PathVariable String sha, @RequestBody @Valid UpdateCommitRequest request) {
+    if (!sha.equals(request.sha())) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sha mismatch");
+    }
+    CommitSummary summary = commitManager.update(request);
+    return ResponseEntity.ok(summary);
   }
 }

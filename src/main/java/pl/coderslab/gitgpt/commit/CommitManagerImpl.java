@@ -27,6 +27,29 @@ public class CommitManagerImpl implements CommitManager {
     return commit.map(this::toSummary);
   }
 
+  @Override
+  public CommitSummary update(UpdateCommitRequest request) {
+    return commitRepository
+        .findBySha(request.sha())
+        .map(
+            commit -> {
+              commit.setName(request.name());
+              if (request.description() != null) {
+                commit.setDescription(request.description());
+              }
+              if (request.upload() != null) {
+                if (commit.isUploaded()) {
+                  throw new IllegalStateException("Commit already uploaded");
+                }
+                commit.setUploaded(true);
+              }
+              return commit;
+            })
+        .map(commitRepository::save)
+        .map(this::toSummary)
+        .orElseThrow(() -> new IllegalArgumentException("No commit with sha " + request.sha()));
+  }
+
   private CommitSummary toSummary(Commit commit) {
     return new CommitSummary(
         commit.getSha(),

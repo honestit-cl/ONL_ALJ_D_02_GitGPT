@@ -8,4 +8,6 @@ public interface CommitManager {
   List<CommitSummary> getAll();
 
   Optional<CommitSummary> getBySha(String sha);
+
+  CommitSummary update(UpdateCommitRequest request);
 }
