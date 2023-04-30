@@ -18,7 +18,9 @@ import java.util.List;
 @ToString
 public class Commit {
 
-  @Id @GeneratedValue private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
   @Column(nullable = true, unique = true)
   private String sha;
