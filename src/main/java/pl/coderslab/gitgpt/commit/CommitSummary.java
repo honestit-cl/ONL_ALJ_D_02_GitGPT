@@ -10,4 +10,5 @@ public record CommitSummary(
     String author,
     String name,
     String destination,
-    @JsonFormat(pattern = "eee MMM dd hh:mm:ss yyyy") LocalDateTime date) {}
+    @JsonFormat(pattern = "eee MMM dd hh:mm:ss yyyy") LocalDateTime date,
+    Integer changeCount) {}

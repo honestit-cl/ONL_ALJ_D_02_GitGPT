@@ -54,8 +54,16 @@ public class DataInitializer {
             .type(ChangeType.DELETION)
             .repository(designPatternsRepo)
             .build();
-
     changeRepository.save(change2);
+
+    Change change3 =
+        Change.builder()
+            .path("README.md")
+            .type(ChangeType.MODIFICATION)
+            .repository(designPatternsRepo)
+            .build();
+    changeRepository.save(change3);
+
     Commit commit1 =
         Commit.builder()
             .name("Add Factory implementation")
@@ -71,6 +79,19 @@ public class DataInitializer {
 
     change2.setCommit(commit1);
     changeRepository.save(change2);
+
+    Commit commit2 =
+        Commit.builder()
+            .name("Add brief description to README.md")
+            .branch("main")
+            .repository(designPatternsRepo)
+            .author(iluvatar)
+            .sha("02af2acb-cb07-4074-99d8-7e104ed2096d")
+            .build();
+    commitRepository.save(commit2);
+
+    change3.setCommit(commit2);
+    changeRepository.save(change3);
 
     Change uncommittedChange1 =
         Change.builder()

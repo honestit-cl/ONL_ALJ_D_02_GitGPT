@@ -3,6 +3,7 @@ package pl.coderslab.gitgpt.commit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.coderslab.gitgpt.author.Author;
 import pl.coderslab.gitgpt.author.AuthorRepository;
 import pl.coderslab.gitgpt.repository.Repository;
@@ -25,17 +26,21 @@ public class CommitManagerImpl implements CommitManager {
 
   @Override
   public List<CommitSummary> getAll() {
-    List<Commit> commits = commitRepository.findAll();
+    List<Commit> commits = commitRepository.findAllWithChangeListBy();
     return commits.stream().map(this::toSummary).collect(Collectors.toList());
   }
 
   @Override
+  // Dodajemy transakcje, więc dodatkowe zapytanie pobierające changeList dla commit powiedzie się -
+  // w transakcji jest dostępna sesja.
+  @Transactional
   public Optional<CommitSummary> getBySha(String sha) {
     Optional<Commit> commit = commitRepository.findBySha(sha);
     return commit.map(this::toSummary);
   }
 
   @Override
+  @Transactional
   public CommitSummary update(UpdateCommitRequest request) {
     return commitRepository
         .findBySha(request.sha())
@@ -59,6 +64,7 @@ public class CommitManagerImpl implements CommitManager {
   }
 
   @Override
+  @Transactional
   public CommitSummary create(CreateCommitRequest request) {
     Author author =
         authorRepository
@@ -108,6 +114,7 @@ public class CommitManagerImpl implements CommitManager {
         commit.getAuthor().getName(),
         commit.getName(),
         commit.getRepository().getName() + " - " + commit.getBranch(),
-        commit.getCreatedOn());
+        commit.getCreatedOn(),
+        commit.getChangeList().size());
   }
 }
