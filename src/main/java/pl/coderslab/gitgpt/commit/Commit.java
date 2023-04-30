@@ -3,6 +3,7 @@ package pl.coderslab.gitgpt.commit;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import pl.coderslab.gitgpt.author.Author;
 import pl.coderslab.gitgpt.repository.Repository;
 
 import javax.persistence.*;
@@ -37,6 +38,8 @@ public class Commit {
 
   private boolean uploaded;
 
+  private String branch;
+
   // Ta strona NIE jest właścicielem relacji
   // Domyślnie jest lazy loading czyli pobierając commit z bazy nie dostajemy od razu listy jego
   // zmian.
@@ -46,4 +49,7 @@ public class Commit {
 
   @ManyToOne(optional = false)
   private Repository repository;
+
+  @ManyToOne(optional = false)
+  private Author author;
 }
