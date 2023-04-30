@@ -46,11 +46,16 @@ public class DataInitializer {
         Change.builder()
             .path("src/main/java/pl/coderslab/gitgpt/GitGptApplication")
             .type(ChangeType.ADDITION)
+            .repository(designPatternsRepo)
             .build();
     changeRepository.save(change1);
 
     Change change2 =
-        Change.builder().path("src/test/http/cammits.http").type(ChangeType.DELETION).build();
+        Change.builder()
+            .path("src/test/http/cammits.http")
+            .type(ChangeType.DELETION)
+            .repository(designPatternsRepo)
+            .build();
 
     changeRepository.save(change2);
     Commit commit1 =

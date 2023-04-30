@@ -53,4 +53,11 @@ public class Commit {
 
   @ManyToOne(optional = false)
   private Author author;
+
+  // Wywoływane przez Hibernate przed zapisem encji, ustawi nam datę utworzenia automatycznie i nie
+  // musimy się nią przejmować.
+  @PrePersist
+  public void prePersist() {
+    this.createdOn = LocalDateTime.now();
+  }
 }
