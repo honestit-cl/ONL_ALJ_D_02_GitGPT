@@ -14,8 +14,8 @@ import java.util.List;
 @Getter
 @Setter
 // Z generowanych metod typu toString, equals, hashCode wyrzucamy ("ekskludujemy") pola kolekcji i
-// ogólnie z lazy loading.
-@ToString(exclude = "changeList")
+// ogólnie z lazy loading. Patrz: @ToString.Exclude na polu changeList
+@ToString
 public class Commit {
 
   @Id @GeneratedValue private Long id;
