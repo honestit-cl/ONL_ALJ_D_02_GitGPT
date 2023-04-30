@@ -1,8 +1,6 @@
 package pl.coderslab.gitgpt.commit;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import pl.coderslab.gitgpt.repository.Repository;
 
 import javax.persistence.*;
@@ -12,6 +10,9 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Change {
 
   @Id

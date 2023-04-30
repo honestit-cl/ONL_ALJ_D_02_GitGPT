@@ -1,8 +1,6 @@
 package pl.coderslab.gitgpt.author;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import pl.coderslab.gitgpt.repository.Repository;
 
 import javax.persistence.*;
@@ -14,6 +12,10 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+// NoArgsConstructor czyli bezargumentowy musimy zawsze dodać jeżeli dodajemy też jakiś inny
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Author {
 
   @Id

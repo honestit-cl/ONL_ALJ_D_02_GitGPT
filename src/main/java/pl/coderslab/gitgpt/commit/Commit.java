@@ -1,8 +1,6 @@
 package pl.coderslab.gitgpt.commit;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import pl.coderslab.gitgpt.author.Author;
 import pl.coderslab.gitgpt.repository.Repository;
 
@@ -18,6 +16,9 @@ import java.util.List;
 // Z generowanych metod typu toString, equals, hashCode wyrzucamy ("ekskludujemy") pola kolekcji i
 // ogólnie z lazy loading. Patrz: @ToString.Exclude na polu changeList
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Commit {
 
   @Id
