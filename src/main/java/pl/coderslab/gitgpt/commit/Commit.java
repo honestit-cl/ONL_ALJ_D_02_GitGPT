@@ -25,10 +25,10 @@ public class Commit {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(nullable = true, unique = true)
+  @Column(nullable = false, unique = true)
   private String sha;
 
-  @Column(nullable = true)
+  @Column(nullable = false)
   private String name;
 
   @Column(length = 1024)
