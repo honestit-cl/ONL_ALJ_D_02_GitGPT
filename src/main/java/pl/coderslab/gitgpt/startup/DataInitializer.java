@@ -64,7 +64,7 @@ public class DataInitializer {
             .branch("main")
             .repository(designPatternsRepo)
             .author(iluvatar)
-            .sha(UUID.randomUUID().toString())
+            .sha("02af2acb-fa0b-4074-99d8-7e104ed2096d")
             .build();
     commitRepository.save(commit1);
 

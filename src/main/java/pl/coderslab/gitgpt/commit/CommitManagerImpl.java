@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,6 +19,12 @@ public class CommitManagerImpl implements CommitManager {
   public List<CommitSummary> getAll() {
     List<Commit> commits = commitRepository.findAll();
     return commits.stream().map(this::toSummary).collect(Collectors.toList());
+  }
+
+  @Override
+  public Optional<CommitSummary> getBySha(String sha) {
+    Optional<Commit> commit = commitRepository.findBySha(sha);
+    return commit.map(this::toSummary);
   }
 
   private CommitSummary toSummary(Commit commit) {
