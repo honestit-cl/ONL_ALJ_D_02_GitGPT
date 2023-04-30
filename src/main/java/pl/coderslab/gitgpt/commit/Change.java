@@ -3,6 +3,7 @@ package pl.coderslab.gitgpt.commit;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import pl.coderslab.gitgpt.repository.Repository;
 
 import javax.persistence.*;
 
@@ -25,4 +26,7 @@ public class Change {
   //  Ta strona jest właścicielem relacji. Chcąc powiązać commit ze zmianą, trzeba ustawić wartość
   // pola commit wewnątrz obiektu Change.
   @ManyToOne private Commit commit;
+
+  @ManyToOne(optional = false)
+  private Repository repository;
 }
