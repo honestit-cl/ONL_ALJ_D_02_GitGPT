@@ -3,6 +3,7 @@ package pl.coderslab.gitgpt.commit;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import pl.coderslab.gitgpt.repository.Repository;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -42,4 +43,7 @@ public class Commit {
   @OneToMany(mappedBy = "commit")
   @ToString.Exclude
   private List<Change> changeList = new ArrayList<>();
+
+  @ManyToOne(optional = false)
+  private Repository repository;
 }
