@@ -2,7 +2,7 @@
 GET http://localhost:8080/api/commits
 
 ### Get commit by sha
-GET http://localhost:8080/api/commits/02af2acb-fa0b-4074-99d8-7e104ed2096d
+GET http://localhost:8080/api/commits/b2de1d0a-c3b8-49a6-a5e2-4c182d4f2edc
 
 ### Update commit
 PUT http://localhost:8080/api/commits/02af2acb-fa0b-4074-99d8-7e104ed2096d
@@ -13,4 +13,14 @@ Content-Type: application/json
   "name": "Add Factory GoF pattern implementation",
   "description": "Factory pattern is one of GoF base pattern and we need this implementation",
   "upload": true
+}
+
+### Create commit
+POST http://localhost:8080/api/commits
+Content-Type: application/json
+
+{
+  "name": "Add Proxy pattern implementation",
+  "repositoryName": "design-patterns",
+  "authorName": "iluvatar"
 }

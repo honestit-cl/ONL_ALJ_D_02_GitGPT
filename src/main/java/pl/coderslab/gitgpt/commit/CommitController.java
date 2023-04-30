@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,5 +41,11 @@ public class CommitController {
     }
     CommitSummary summary = commitManager.update(request);
     return ResponseEntity.ok(summary);
+  }
+
+  @PostMapping
+  public ResponseEntity<?> createCommit(@RequestBody @Valid CreateCommitRequest request) {
+    CommitSummary summary = commitManager.create(request);
+    return ResponseEntity.created(URI.create("/api/commits/" + summary.sha())).build();
   }
 }

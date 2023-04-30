@@ -3,9 +3,14 @@ package pl.coderslab.gitgpt.commit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import pl.coderslab.gitgpt.author.Author;
+import pl.coderslab.gitgpt.author.AuthorRepository;
+import pl.coderslab.gitgpt.repository.Repository;
+import pl.coderslab.gitgpt.repository.RepositoryRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -14,6 +19,9 @@ import java.util.stream.Collectors;
 public class CommitManagerImpl implements CommitManager {
 
   private final CommitRepository commitRepository;
+  private final ChangeRepository changeRepository;
+  private final AuthorRepository authorRepository;
+  private final RepositoryRepository repositoryRepository;
 
   @Override
   public List<CommitSummary> getAll() {
@@ -48,6 +56,50 @@ public class CommitManagerImpl implements CommitManager {
         .map(commitRepository::save)
         .map(this::toSummary)
         .orElseThrow(() -> new IllegalArgumentException("No commit with sha " + request.sha()));
+  }
+
+  @Override
+  public CommitSummary create(CreateCommitRequest request) {
+    Author author =
+        authorRepository
+            .findByName(request.authorName())
+            .orElseThrow(
+                () -> new IllegalArgumentException("No author with name " + request.authorName()));
+    Repository repository =
+        repositoryRepository
+            .findByNameAndOwner(request.repositoryName(), author)
+            .orElseThrow(
+                () ->
+                    new IllegalArgumentException(
+                        "No repository with name "
+                            + request.repositoryName()
+                            + " for author "
+                            + author.getName()));
+    List<Change> changeList = changeRepository.findAllByRepositoryAndCommitIsNull(repository);
+
+    if (changeList.isEmpty()) {
+      throw new IllegalStateException("No changes");
+    }
+
+    Commit commit =
+        Commit.builder()
+            .sha(UUID.randomUUID().toString())
+            .author(author)
+            .repository(repository)
+            .branch(request.branch() != null ? request.branch() : "main")
+            .name(request.name())
+            .description(request.description())
+            .uploaded(false)
+            .changeList(changeList)
+            .build();
+    commitRepository.save(commit);
+
+    for (Change change : changeList) {
+      change.setCommit(commit);
+    }
+
+    changeRepository.saveAll(changeList);
+    return toSummary(commit);
   }
 
   private CommitSummary toSummary(Commit commit) {

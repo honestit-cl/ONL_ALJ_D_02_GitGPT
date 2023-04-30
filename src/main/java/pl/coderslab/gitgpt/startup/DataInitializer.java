@@ -13,8 +13,6 @@ import pl.coderslab.gitgpt.commit.*;
 import pl.coderslab.gitgpt.repository.Repository;
 import pl.coderslab.gitgpt.repository.RepositoryRepository;
 
-import java.util.UUID;
-
 @Component
 // Ten komponent jest aktywny tylko wtedy, gdy wybranym profile jest profil "local"
 @Profile("local")
@@ -73,5 +71,21 @@ public class DataInitializer {
 
     change2.setCommit(commit1);
     changeRepository.save(change2);
+
+    Change uncommittedChange1 =
+        Change.builder()
+            .repository(designPatternsRepo)
+            .type(ChangeType.MODIFICATION)
+            .path("src/test/commits.http")
+            .build();
+    changeRepository.save(uncommittedChange1);
+
+    Change uncommittedChange2 =
+        Change.builder()
+            .repository(designPatternsRepo)
+            .type(ChangeType.DELETION)
+            .path("data/test.txt")
+            .build();
+    changeRepository.save(uncommittedChange2);
   }
 }

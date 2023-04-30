@@ -10,4 +10,6 @@ public interface CommitManager {
   Optional<CommitSummary> getBySha(String sha);
 
   CommitSummary update(UpdateCommitRequest request);
+
+  CommitSummary create(CreateCommitRequest request);
 }
